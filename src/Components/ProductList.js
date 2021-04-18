@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { useHistory } from 'react-router-dom';
 
 function ProductList() {
     let [products, setProducts] = useState([]);
@@ -9,9 +10,11 @@ function ProductList() {
 
     const element = <FontAwesomeIcon icon={faShoppingCart} />
 
+    const history = useHistory();
+
     useEffect(() => {
         getProducts();
-    });
+    }, [products]);
     
     const getProducts = async () => {
         let productList = await fetch('https://fakestoreapi.com/products');
@@ -25,13 +28,17 @@ function ProductList() {
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
     }
 
+    const goToCart = () => {
+        history.push('/cart');
+    }
+
     return (
         <div>
             <div style={{display: 'flex', padding: '20px'}}>
                 <h2 style={{width: '100%'}}>
                     <span style={{float: 'left', marginLeft: '10px'}}>Products</span>
                     <input onChange={event => setSearchValue(event.target.value)} value={searchValue} type="text" placeholder="Enter product name to search..." style={{width: '50%', height: '40px', fontSize: '16px'}}></input>
-                    <div style={{float: 'right', marginRight: '10px'}}>
+                    <div style={{float: 'right', marginRight: '10px', cursor: 'pointer'}} onClick={goToCart}>
                         <span>{element} {cartItems.length || ''}</span>
                     </div>
                 </h2>
