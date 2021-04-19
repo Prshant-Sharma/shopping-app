@@ -14,7 +14,7 @@ function ProductList() {
 
     useEffect(() => {
         getProducts();
-    }, [products]);
+    }, [products, cartItems]);
     
     const getProducts = async () => {
         let productList = await fetch('https://fakestoreapi.com/products');
@@ -47,11 +47,11 @@ function ProductList() {
                 if(!searchValue) {return true} else return product.title.toLowerCase().includes(searchValue.toLowerCase())
             }).map(product => {
                 return(
-                    <div key={product.id} style={{display: 'inline-block', backgroundColor: '#dcdcdc', padding: '30px', margin: '10px', boxShadow: '0px 0px 12px #000', width: '250px', height: '250px'}}>
-                        <img src={product.image} style={{width: '200px', height: '200px'}} alt={product.id}></img>
+                    <div key={product.id} style={{display: 'inline-block', backgroundColor: '#dcdcdc', padding: '30px', margin: '10px', boxShadow: '0px 0px 12px #000', width: '250px', height: '300px'}}>
+                        <img src={product.image} style={{width: '200px', height: '250px'}} alt={product.id}></img>
                         <div style={{display: 'flex'}}>
                             <span style={{float: 'left', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap'}} title={product.title}>{product.title}</span>
-                            <span style={{float: 'right'}}>${product.price}</span>
+                            <span style={{marginLeft: 'auto'}}>${product.price}</span>
                         </div>
                         <div>
                             <button onClick={() => addToCart(product)}>Add to cart</button>
@@ -60,6 +60,7 @@ function ProductList() {
                     </div>
                 )
             })}
+            {!products.length ? 'Loading...' : ''}
         </div>
     )
 }
