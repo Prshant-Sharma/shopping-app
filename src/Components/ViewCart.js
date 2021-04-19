@@ -8,11 +8,6 @@ function ViewCart() {
         getCartItems();
     }, [cartItems]);
 
-    // useEffect(() => {
-    //     let cartData = JSON.parse(localStorage.getItem('cartItems')); 
-    //     setCartItems(cartData);
-    // }, [cartItems]);
-
     const getCartItems = () => {
         let cart = JSON.parse(localStorage.getItem('cartItems'));
         setCartItems(cart);
@@ -30,7 +25,7 @@ function ViewCart() {
             {cartItems.map((item, index) => {
                 return(
                     <div key={item.id} style={{display: 'inline-block', backgroundColor: '#dcdcdc', padding: '30px', margin: '10px', width: '250px', height: '300px'}}>
-                        <img src={item.image} style={{width: '200px', height: '250px'}}></img>
+                        <img src={item.image} style={{width: '200px', height: '250px'}} alt={item.id}></img>
                         <div style={{display: 'flex'}}>
                             <span style={{float: 'left', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap'}} title={item.title}>{item.title}</span>
                             <span style={{marginLeft: 'auto'}}>${item.price}</span>

@@ -24,12 +24,13 @@ function ProductList() {
     }
 
     const addToCart = (product) => {
+        let productIds = cartItems.map(product => product.id); 
+        if(productIds.includes(product.id)) {
+            alert('Product already added');
+            return
+        }
         cartItems.push(product);
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }
-
-    const goToCart = () => {
-        history.push('/cart');
     }
 
     return (
@@ -38,7 +39,7 @@ function ProductList() {
                 <h2 style={{width: '100%'}}>
                     <span style={{float: 'left', marginLeft: '10px'}}>Products</span>
                     <input onChange={event => setSearchValue(event.target.value)} value={searchValue} type="text" placeholder="Enter product name to search..." style={{width: '50%', height: '40px', fontSize: '16px'}}></input>
-                    <div style={{float: 'right', marginRight: '10px', cursor: 'pointer'}} onClick={goToCart}>
+                    <div style={{float: 'right', marginRight: '10px', cursor: 'pointer'}} onClick={() => history.push('/cart')}>
                         <span>{element} {cartItems.length || ''}</span>
                     </div>
                 </h2>
@@ -54,7 +55,7 @@ function ProductList() {
                             <span style={{marginLeft: 'auto'}}>${product.price}</span>
                         </div>
                         <div>
-                            <button onClick={() => addToCart(product)}>Add to cart</button>
+                            <button onClick={() => addToCart(product)}>{cartItems.map(item => item.id === product.id) ? 'Added' : 'Add to cart'}</button>
                             <button>Buy now</button>
                         </div>
                     </div>
