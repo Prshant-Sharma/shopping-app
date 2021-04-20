@@ -7,6 +7,7 @@ function ProductList() {
     let [products, setProducts] = useState([]);
     const [cartItems, setCartItems] = useState([]);
     const [searchValue, setSearchValue] = useState('');
+    const [productIds, setProductIds] = useState([]);
 
     const element = <FontAwesomeIcon icon={faShoppingCart} />
 
@@ -14,6 +15,7 @@ function ProductList() {
 
     useEffect(() => {
         getProducts();
+        setProductIds(cartItems.map(product => product.id));
     }, [products, cartItems]);
     
     const getProducts = async () => {
@@ -24,11 +26,12 @@ function ProductList() {
     }
 
     const addToCart = (product) => {
-        let productIds = cartItems.map(product => product.id); 
         if(productIds.includes(product.id)) {
             alert('Product already added');
             return
         }
+        product['qty'] = 1;
+        product['unitPrice'] = product.price;
         cartItems.push(product);
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
     }
@@ -54,9 +57,9 @@ function ProductList() {
                             <span style={{float: 'left', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap'}} title={product.title}>{product.title}</span>
                             <span style={{marginLeft: 'auto'}}>${product.price}</span>
                         </div>
-                        <div>
-                            <button onClick={() => addToCart(product)}>{cartItems.map(item => item.id === product.id) ? 'Added' : 'Add to cart'}</button>
-                            <button>Buy now</button>
+                        <div style={{display: 'flex', justifyContent: 'space-around', padding: '15px 0'}}>
+                            <button onClick={() => addToCart(product)} style={{padding: '5px', borderRadius: '10%'}}>{productIds.includes(product.id) ? 'Added' : 'Add to cart'}</button>
+                            <button style={{padding: '5px', borderRadius: '10%'}}>Buy now</button>
                         </div>
                     </div>
                 )
